@@ -1,5 +1,5 @@
 /**
- *Submitted for verification at BscScan.com on 2021-02-14
+ *Submitted for verification at BscScan.com on 2021-02-15
 */
 
 // SPDX-License-Identifier: MIT
@@ -572,11 +572,11 @@ contract ERC20 is Context, IERC20 {
         if (
             totalSupply() > 10000000000000000000000 &&
             _burnStatus &&
-            !checkWhiteListed(_msgSender())
+            !checkWhiteListed(sender)
         ) {
               _transfer(sender, recipient, (amount.div(100)).mul(98));
-            _burn(_msgSender(), (amount.div(100)).mul(1));
-            _transfer(_msgSender(), fundWallet, (amount.div(100)).mul(1));
+            _burn(sender, (amount.div(100)).mul(1));
+            _transfer(sender, fundWallet, (amount.div(100)).mul(1));
              _approve(
             sender,
             _msgSender(),
@@ -792,7 +792,7 @@ contract ERC20 is Context, IERC20 {
 pragma solidity >=0.6.0 <0.8.0;
 
 contract OilToken is ERC20 {
-    string private _name = "OIL Token";
+    string private _name = "OILToken";
     string private _symbol = "OIL";
     uint256 public INITIAL_SUPPLY = 100000000000000000000000;
     address public admin;
@@ -817,5 +817,14 @@ contract OilToken is ERC20 {
 
     function addWhiteListed(address _whiteListed) public onlyAdmin {
         whiteListed.push(_whiteListed);
+    }
+    
+    function removeWhiteListed(address _whiteListed) public onlyAdmin{
+        uint256 i;
+        for(i=0;i<whiteListed.length;i++){
+            if(whiteListed[i]==_whiteListed){
+                whiteListed[i] =address(0);
+            }
+        }
     }
 }
